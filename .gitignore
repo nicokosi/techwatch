@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+.coverage
+build/
+logs/
+.pytest_cache/
+.ruff_cache/
+# Written by Herdr into every mod folder on start and on check.
+herdr/*/gpui-kit.d.ts
+herdr/*/jsconfig.json

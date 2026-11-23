@@ -1,0 +1,11 @@
+[Unit]
+Description=Daily tech watch digest, every morning
+
+[Timer]
+OnCalendar=*-*-* 08:00
+# Laptop off at 08:00: run at the next boot instead of skipping the day.
+Persistent=true
+RandomizedDelaySec=10min
+
+[Install]
+WantedBy=timers.target

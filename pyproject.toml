@@ -1,0 +1,31 @@
+[project]
+name = "techwatch"
+version = "0.1.0"
+description = "Daily tech watch digest: feeds collected by a script, sorted by Claude"
+requires-python = ">=3.13"
+dependencies = []
+
+[project.scripts]
+techwatch-fetch = "techwatch.fetch:main"
+techwatch-react = "techwatch.reactions:main"
+techwatch-stack = "techwatch.stack:main"
+
+[dependency-groups]
+dev = ["pytest", "pytest-cov", "ruff", "ty"]
+
+[build-system]
+requires = ["uv_build>=0.8,<1"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.coverage.run]
+branch = true
+source = ["techwatch"]

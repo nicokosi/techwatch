@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily tech watch digest
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+# A login shell gives the job the PATH of mise, uv and claude. `mise run install-timer`
+# replaces @REPO@ with the clone's path, so the repository can live anywhere.
+ExecStart=/bin/bash -lc '"@REPO@/scripts/daily.sh" --once'

@@ -1,0 +1,53 @@
+[tools]
+python = "3.13"
+uv = "latest"
+
+[tasks.install]
+description = "Sync dependencies"
+run = "uv sync"
+
+[tasks.lint]
+description = "Lint"
+run = "uv run ruff check ."
+
+[tasks.format]
+description = "Check formatting"
+run = "uv run ruff format --check ."
+
+[tasks.types]
+description = "Type-check"
+run = "uv run ty check src"
+
+[tasks.test]
+description = "Run the test suite with branch coverage"
+run = "uv run pytest -q --cov --cov-report=term-missing"
+
+[tasks.fix]
+description = "Auto-fix formatting and lint issues"
+run = ["uv run ruff format .", "uv run ruff check --fix ."]
+
+[tasks.check]
+description = "Everything that must be green before any commit"
+depends = ["lint", "format", "types", "test"]
+
+[tasks.veille]
+description = "Write, commit and push a new digest; `mise run veille 2026-11-15` collects since that day"
+run = "scripts/daily.sh"
+
+[tasks.sources]
+description = "Report the health of every feed in sources.md"
+run = "uv run techwatch-fetch --check"
+
+[tasks.install-timer]
+description = "Install the systemd user timer that runs the digest every morning"
+run = [
+    "mkdir -p ~/.config/systemd/user",
+    "sed 's|@REPO@|{{config_root}}|' {{config_root}}/deploy/systemd/techwatch.service > ~/.config/systemd/user/techwatch.service",
+    "ln -sf {{config_root}}/deploy/systemd/techwatch.timer ~/.config/systemd/user/",
+    "systemctl --user daemon-reload",
+    "systemctl --user enable --now techwatch.timer",
+]
+
+[tasks.install-herdr-mod]
+description = "Link the Herdr mod that reads digests and starts a run (ctrl-shift-d once bound)"
+run = "ln -sfn {{config_root}}/herdr/techwatch ~/.config/herdr-app/mods/techwatch"
